@@ -3,10 +3,10 @@ const { UniversitiesController } = require('../controllers/universities-controll
 const CONTROLLERS = Object.freeze({
     universities: UniversitiesController,
 });
-const controllerFactory = (resocurce, ...args) => {
+const controllerFactory = (resocurce, context) => {
     const resolver = CONTROLLERS[resocurce];
     if (!resolver) throw new Error('Unknown controller resource: ', resocurce);
-    return new resolver(...args);
+    return new resolver(context);
 };
 
 module.exports = { controllerFactory };

@@ -11,7 +11,7 @@ class HttpAdapter extends BaseAdapter {
 
     async #handlerRequest(request, response) {
         const formattedRequest = await this.#formatRequest(request);
-        await this.onRequest(formattedRequest.path.resource, formattedRequest, this);
+        await this.onRequest(formattedRequest.path.resource);
         const result = await this.#execute(request.method, formattedRequest);
         response.write(`${result}\n`);
         response.end();
@@ -79,7 +79,7 @@ class HttpAdapter extends BaseAdapter {
     }
 
     async #execute(method, request) {
-        const result = await this[method](request);
+        const result = await this.instanceAction[method](request);
         return result;
     }
 }
