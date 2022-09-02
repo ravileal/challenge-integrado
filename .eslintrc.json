@@ -1,0 +1,30 @@
+{
+    "extends": "eslint:recommended",
+    "plugins": [
+        "prettier"
+    ],
+    "env": {
+        "es2022": true,
+        "node": true,
+        "commonjs": true,
+        "jest": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2022
+    },
+    "rules": {
+        "prettier/prettier": [
+            "error"
+        ],
+        "no-console": [
+            "error",
+            {
+                "allow": [
+                    "info",
+                    "warn",
+                    "error"
+                ]
+            }
+        ]
+    }
+}

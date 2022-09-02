@@ -1,0 +1,18 @@
+{
+    "verbose": true,
+    "ignore": [
+        "**/*.spec.js",
+        "node_modules/**",
+        "coverage/**",
+        "**/.*",
+        "**/.git*"
+    ],
+    "watch": [
+        "src/**",
+        "index.js"
+    ],
+    "env": {
+        "NODE_ENV": "development"
+    },
+    "ext": "js,json"
+}

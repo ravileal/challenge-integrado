@@ -1,0 +1,13 @@
+{
+    "threshold": 0,
+    "reporters": [
+        "html",
+        "console"
+    ],
+    "ignore": [
+        "**/__tests__/**"
+    ],
+    "absolute": true,
+    "format": "javascript",
+    "output": "./coverage/jscpd"
+}
