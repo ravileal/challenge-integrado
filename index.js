@@ -7,16 +7,15 @@ const connection = connectionFactory(database.driver, database);
 
 const { HttpAdapter } = require('./src/infra/server/HttpAdapter');
 const { ApplicationController } = require('./src/interface/controllers/application-controller');
-const { UniversityView } = require('./src/interface/views');
 const { UniversityRepository } = require('./src/domain/repositories/university-repository');
 
 const context = {
     connection,
     schemaFactory,
     server: new HttpAdapter(),
-    universityView: UniversityView,
     universityRepository: new UniversityRepository(),
     ...require('./src/app'),
+    ...require('./src/interface/views'),
 };
 
 const appController = new ApplicationController(context);

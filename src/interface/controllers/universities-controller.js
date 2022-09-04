@@ -7,7 +7,7 @@ class UniversitiesController extends BaseController {
             server,
             context,
             connection: context.connection,
-            view: context.universityView,
+            view: context.UniversityView,
             useCases: {
                 getById: context.getByIdUniversityUseCase,
                 getAll: context.getAllUniversityUseCase,

@@ -20,11 +20,21 @@ class UniversityRepository extends IUniversityRepository {
         });
     }
 
-    async getAll(filters, model) {
-        const universities = await model.schema.find(filters);
-        if (!universities.length) throw new NotFoundError(`Not found university`);
+    async getAll({ pagination: { pageSize, pageNumber }, ...filters }, model) {
+        const universities = await model.schema
+            .find(filters)
+            .limit(pageSize)
+            .skip(pageNumber * pageSize);
+        const totalCount = await model.schema.countDocuments(filters);
         const universitiesModel = universities.map(this.#toDomain);
-        return universitiesModel;
+        return {
+            pagination: {
+                pageNumber,
+                pageSize,
+                totalCount,
+            },
+            data: universitiesModel,
+        };
     }
 
     async getById(id, model) {

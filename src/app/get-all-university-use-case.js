@@ -1,13 +1,19 @@
 const { UniversityEntity } = require('../domain/entities/university-entity');
 
 const getAllUniversityUseCase = async (
-    { universityRepository, universityView, schemaFactory },
+    { universityRepository, UniversityView, schemaFactory },
     { filters },
 ) => {
     const schema = schemaFactory(UniversityEntity.ENTITY);
-    const universitiesModel = await universityRepository.getAll(filters, { schema });
-    const universitiesView = universitiesModel.map(universityView.fit);
-    return universitiesView;
+    const { data: universitiesModel, pagination } = await universityRepository.getAll(
+        { pagination: filters.pagination },
+        { schema },
+    );
+    const universitiesView = universitiesModel.map(v => new UniversityView(v));
+    return {
+        pagination,
+        data: universitiesView,
+    };
 };
 
 module.exports = { getAllUniversityUseCase };

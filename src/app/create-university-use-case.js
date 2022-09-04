@@ -2,7 +2,7 @@ const { UniversityEntity } = require('../domain/entities/university-entity');
 // const { randomUUID: uuid } = require('node:crypto');
 
 const createUniversityUseCase = async (
-    { universityRepository, schemaFactory, universityView },
+    { universityRepository, schemaFactory, UniversityView },
     { dataView },
     connection,
 ) => {
@@ -14,7 +14,7 @@ const createUniversityUseCase = async (
     };
     const universityModel = new UniversityEntity(data);
     const result = await universityRepository.save(universityModel, connection);
-    const university = universityView.fit(result);
+    const university = new UniversityView(result);
     return university;
 };
 

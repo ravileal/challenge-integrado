@@ -1,3 +1,5 @@
+const { PaginationView } = require('../views');
+
 class BaseController {
     constructor({ server, context, useCases, connection, view }) {
         this.server = server;
@@ -8,14 +10,27 @@ class BaseController {
     }
 
     async get({ path: { paths }, query }) {
-        const id = paths[0];
-        const payload = {
-            filters: { ...query, ...(id && { id }) },
-        };
+        const [id] = paths;
         const action = id ? 'getById' : 'getAll';
-        const data = await this.useCases[action](this.context, payload);
+        const data = await this[action](query, paths);
         const headers = { 'Content-Type': 'application/json' };
         return { data, headers };
+    }
+
+    async getAll({ pageNumber, pageSize, ...query }, paths) {
+        const pagination = new PaginationView({ pageNumber, pageSize });
+        const payload = { filters: { ...query, pagination, id: paths[0] } };
+        const result = await this.useCases.getAll(this.context, payload);
+        return {
+            pagination: new PaginationView(result.pagination),
+            data: result.data,
+        };
+    }
+
+    async getById(query) {
+        const payload = { filters: { ...query } };
+        const data = await this.useCases.getById(this.context, payload);
+        return data;
     }
 
     async post({ data: payload }) {

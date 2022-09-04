@@ -1,3 +1,4 @@
 module.exports = {
-    ...require('./universityView'),
+    ...require('./UniversityView'),
+    ...require('./paginationView'),
 };

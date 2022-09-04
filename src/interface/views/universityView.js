@@ -10,10 +10,6 @@ class UniversityView {
         this.domains = domains;
     }
 
-    static fit(data) {
-        return new UniversityView(data);
-    }
-
     fromModel({ id, name, state, stateCode, country, countryCode, webPages, domains }) {
         this.id = id;
         this.name = name;
