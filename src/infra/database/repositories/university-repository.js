@@ -4,7 +4,7 @@ class IUniversityRepository {
         throw new Error('Method Not Implemented');
     }
 
-    async getOne(id, connection) {
+    async getById(id, connection) {
         throw new Error('Method Not Implemented');
     }
 

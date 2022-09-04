@@ -1,7 +1,8 @@
-const deleteUniversityUseCase = async ({ universityRepository }, { id }, connection) => {
-    const universityModel = await universityRepository.getOne({ id }, connection);
-    universityModel.deletedAt = new Date();
-    await universityRepository.save(universityModel, connection);
+const { UniversityEntity } = require('../domain/entities/university-entity');
+
+const deleteUniversityUseCase = async ({ universityRepository, schemaFactory }, { id }) => {
+    const schema = schemaFactory(UniversityEntity.ENTITY);
+    await universityRepository.delete(id, { schema });
 };
 
 module.exports = { deleteUniversityUseCase };

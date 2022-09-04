@@ -11,10 +11,23 @@ class HttpAdapter extends BaseAdapter {
 
     async #handlerRequest(request, response) {
         const formattedRequest = await this.#formatRequest(request);
-        await this.onRequest(formattedRequest.path.resource);
-        const result = await this.#execute(request.method, formattedRequest);
-        response.write(`${result}\n`);
+        let result;
+        try {
+            await this.onRequest(formattedRequest.path.resource);
+            result = await this.#execute(request.method, formattedRequest);
+        } catch (e) {
+            console.error(e);
+            result = { status: 500, data: e.message };
+        }
+        this.#formatResponse(response, result);
         response.end();
+    }
+
+    #formatResponse(response, { data = '', headers = [], status = '200' }) {
+        Object.entries(headers).forEach(([key, value]) => response.setHeader(key, value));
+        response.statusCode = status;
+        const stringData = typeof data === 'string' ? data : JSON.stringify(data);
+        response.write(stringData);
     }
 
     async #formatRequest(request) {
@@ -79,7 +92,7 @@ class HttpAdapter extends BaseAdapter {
     }
 
     async #execute(method, request) {
-        const result = await this.instanceAction[method](request);
+        const result = await this[method](request);
         return result;
     }
 }

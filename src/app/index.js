@@ -3,5 +3,5 @@ module.exports = {
     ...require('./delete-university-use-case'),
     ...require('./update-university-use-case'),
     ...require('./get-all-university-use-case'),
-    ...require('./get-one-university-use-case'),
+    ...require('./get-by-id-university-use-case'),
 };

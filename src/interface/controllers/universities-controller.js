@@ -9,7 +9,7 @@ class UniversitiesController extends BaseController {
             connection: context.connection,
             view: context.universityView,
             useCases: {
-                getOne: context.getOneUniversityUseCase,
+                getById: context.getByIdUniversityUseCase,
                 getAll: context.getAllUniversityUseCase,
                 create: context.createUniversityUseCase,
                 update: context.updateUniversityUseCase,
@@ -18,16 +18,14 @@ class UniversitiesController extends BaseController {
         });
     }
 
-    async post({ data }) {
-        const payload = { universityView: super.view.fit(data) };
-        const result = await super.post(payload);
-        return result;
-    }
-
-    async put({ data, path: { paths } }) {
-        const payload = { universityView: super.view.fit(data), id: paths[0] };
-        const result = await super.put(payload);
-        return result;
+    configureServer() {
+        const actions = ['get', 'post', 'put', 'delete'];
+        for (const action of actions)
+            this.server[action] = async request => {
+                const cbAction = () => this[action].call(this, request);
+                const result = await this.connection.getConnection(cbAction);
+                return result;
+            };
     }
 }
 module.exports = { UniversitiesController };

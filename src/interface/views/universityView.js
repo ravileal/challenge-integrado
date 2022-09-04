@@ -1,5 +1,5 @@
 class UniversityView {
-    fit({ id, name, state, state_code, country, country_code, web_pages, domains }) {
+    constructor({ id, name, state, state_code, country, country_code, web_pages, domains }) {
         this.id = id;
         this.name = name;
         this.state = state;
@@ -8,6 +8,10 @@ class UniversityView {
         this.country_code = country_code;
         this.web_pages = web_pages;
         this.domains = domains;
+    }
+
+    static fit(data) {
+        return new UniversityView(data);
     }
 
     fromModel({ id, name, state, stateCode, country, countryCode, webPages, domains }) {

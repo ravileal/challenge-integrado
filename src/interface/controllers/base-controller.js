@@ -8,33 +8,41 @@ class BaseController {
     }
 
     async get({ path: { paths }, query }) {
-        this.server.get = (...args) => this.get(...args);
         const id = paths[0];
         const payload = {
             filters: { ...query, ...(id && { id }) },
         };
-        const action = id ? 'getOne' : 'getAll';
-        const result = await this.useCases[action](this.context, payload, this.connection);
-        return result;
+        const action = id ? 'getById' : 'getAll';
+        const data = await await this.useCases[action](this.context, payload, this.connection);
+        const headers = { 'Content-Type': 'application/json' };
+        return { data, headers };
     }
 
-    async post(payload) {
-        this.server.post = (...args) => this.post(...args);
-        const result = await this.useCases.create(this.context, payload, this.connection);
-        return result || 'post';
+    async post({ data: payload }) {
+        const payloadFormatted = { dataView: this.view.fit(payload) };
+        const data = await await this.useCases.create(
+            this.context,
+            payloadFormatted,
+            this.connection,
+        );
+        const headers = { 'Content-Type': 'application/json' };
+        return { data, headers };
     }
 
-    async put(payload) {
-        this.server.put = (...args) => this.put(...args);
-        const result = await this.useCases.update(this.context, payload, this.connection);
-        return result || 'put';
+    async put({ data: payload, path: { paths } }) {
+        const payloadFormatted = { dataView: this.view.fit(payload), id: paths[0] };
+        const data = await await this.useCases.update(
+            this.context,
+            payloadFormatted,
+            this.connection,
+        );
+        return { data };
     }
 
     async delete({ path: { paths } }) {
-        this.server.delete = (...args) => this.delete(...args);
         const payload = { id: paths[0] };
-        const result = await this.useCases.delete(this.context, payload, this.connection);
-        return result || 'delete';
+        const data = await await this.useCases.delete(this.context, payload, this.connection);
+        return { data };
     }
 }
 module.exports = { BaseController };

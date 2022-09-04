@@ -10,8 +10,15 @@
         "lint": "yarn eslint",
         "test": "yarn jest  --clearCache --logHeapUsage --coverage --passWithNoTests",
         "test:ci": "yarn test --ci",
+        "migrate:up": "migrate-mongo up",
+        "migrate:down": "migrate-mongo down",
+        "migrate:create": "migrate-mongo create",
         "prepare": "yarn add -D husky",
         "duplicated": "jscpd ./src/"
+    },
+    "dependencies": {
+        "mongodb": "^4.9.1",
+        "mongoose": "^6.5.4"
     },
     "devDependencies": {
         "@commitlint/cli": "^17.1.2",
@@ -25,6 +32,7 @@
         "jest": "^29.0.1",
         "jscpd": "^3.4.5",
         "lint-staged": "^13.0.3",
+        "migrate-mongo": "^9.0.0",
         "nodemon": "^2.0.19",
         "prettier": "^2.7.1"
     },

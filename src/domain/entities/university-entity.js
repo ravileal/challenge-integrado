@@ -1,16 +1,10 @@
 const { ValidationError } = require('../../shared/errors/validation-error');
 
-class UniversityModel {
-    static #REQUIRED_FIELDS = [
-        'id',
-        'name',
-        'state',
-        'country',
-        'countryCode',
-        'webPages',
-        'domains',
-    ];
+class UniversityEntity {
+    static #REQUIRED_FIELDS = ['name', 'state', 'country'];
     static #ARRAY_FIELDS = ['webPages', 'domains'];
+
+    static ENTITY = 'university';
 
     constructor({
         id,
@@ -23,7 +17,7 @@ class UniversityModel {
         domains,
         createdAt,
         updatedAt,
-        deletedAt,
+        schema,
     }) {
         this.id = id;
         this.name = name;
@@ -35,14 +29,14 @@ class UniversityModel {
         this.domains = domains;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
+        this.schema = schema;
         this.#validate();
     }
 
     #validate() {
-        const fields = UniversityModel.#REQUIRED_FIELDS.filter(field => {
+        const fields = UniversityEntity.#REQUIRED_FIELDS.filter(field => {
             if (this.#isNil(this[field])) return true;
-            if (UniversityModel.#ARRAY_FIELDS.includes(field) && this.#isEmptyArray(field))
+            if (UniversityEntity.#ARRAY_FIELDS.includes(field) && this.#isEmptyArray(field))
                 return true;
             return false;
         });
@@ -58,6 +52,21 @@ class UniversityModel {
     #isEmptyArray(value) {
         return Array.isArray(value) && !value.length;
     }
+
+    toSchema() {
+        return new this.schema({
+            _id: this.id,
+            name: this.name,
+            state: this.state,
+            state_Code: this.stateCode,
+            country: this.country,
+            country_Code: this.countryCode,
+            web_Pages: this.webPages,
+            domains: this.domains,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+        });
+    }
 }
 
-module.exports = { UniversityModel };
+module.exports = { UniversityEntity };
