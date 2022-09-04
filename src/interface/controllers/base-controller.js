@@ -13,35 +13,28 @@ class BaseController {
             filters: { ...query, ...(id && { id }) },
         };
         const action = id ? 'getById' : 'getAll';
-        const data = await await this.useCases[action](this.context, payload, this.connection);
+        const data = await this.useCases[action](this.context, payload);
         const headers = { 'Content-Type': 'application/json' };
         return { data, headers };
     }
 
     async post({ data: payload }) {
         const payloadFormatted = { dataView: this.view.fit(payload) };
-        const data = await await this.useCases.create(
-            this.context,
-            payloadFormatted,
-            this.connection,
-        );
+        const data = await this.useCases.create(this.context, payloadFormatted);
         const headers = { 'Content-Type': 'application/json' };
         return { data, headers };
     }
 
     async put({ data: payload, path: { paths } }) {
         const payloadFormatted = { dataView: this.view.fit(payload), id: paths[0] };
-        const data = await await this.useCases.update(
-            this.context,
-            payloadFormatted,
-            this.connection,
-        );
-        return { data };
+        const data = await this.useCases.update(this.context, payloadFormatted);
+        const headers = { 'Content-Type': 'application/json' };
+        return { data, headers };
     }
 
     async delete({ path: { paths } }) {
         const payload = { id: paths[0] };
-        const data = await await this.useCases.delete(this.context, payload, this.connection);
+        const data = await this.useCases.delete(this.context, payload);
         return { data };
     }
 }

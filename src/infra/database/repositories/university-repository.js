@@ -11,6 +11,10 @@ class IUniversityRepository {
     async save(model, connection) {
         throw new Error('Method Not Implemented');
     }
+
+    async delete(id, connection) {
+        throw new Error('Method Not Implemented');
+    }
 }
 
 module.exports = { IUniversityRepository };

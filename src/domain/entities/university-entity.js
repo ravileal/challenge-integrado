@@ -42,7 +42,7 @@ class UniversityEntity {
         });
         if (!fields.length) return;
         const fieldsJoin = fields.join(', ');
-        throw new ValidationError(`Empity fields ${fieldsJoin}`);
+        throw new ValidationError(`Empity field: ${fieldsJoin}`);
     }
 
     #isNil(value) {

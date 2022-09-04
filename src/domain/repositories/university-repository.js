@@ -28,7 +28,12 @@ class UniversityRepository extends IUniversityRepository {
     }
 
     async getById(id, model) {
-        const university = await model.schema.findOne({ _id: id });
+        let university;
+        try {
+            university = await model.schema.findOne({ _id: id });
+        } catch (e) {
+            console.error(e);
+        }
         if (!university) throw new NotFoundError(`Not found university`);
         const universityModel = this.#toDomain(university);
         return universityModel;

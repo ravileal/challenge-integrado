@@ -1,11 +1,12 @@
 const { UniversityEntity } = require('../domain/entities/university-entity');
 
 const updateUniversityUseCase = async (
-    { universityRepository, schemaFactory },
+    { universityRepository, schemaFactory, universityView },
     { id, dataView },
 ) => {
+    new UniversityEntity(dataView);
     const schema = schemaFactory(UniversityEntity.ENTITY);
-    const findModel = universityRepository.getById(id);
+    const findModel = await universityRepository.getById(id, { schema });
     const universityModel = new UniversityEntity({
         id,
         ...findModel,
@@ -13,7 +14,9 @@ const updateUniversityUseCase = async (
         updatedAt: new Date(),
         schema,
     });
-    await universityRepository.save(universityModel);
+    const result = await universityRepository.save(universityModel);
+    const university = universityView.fit(result);
+    return university;
 };
 
 module.exports = { updateUniversityUseCase };

@@ -10,17 +10,18 @@ class HttpAdapter extends BaseAdapter {
     }
 
     async #handlerRequest(request, response) {
-        const formattedRequest = await this.#formatRequest(request);
         let result;
         try {
+            const formattedRequest = await this.#formatRequest(request);
             await this.onRequest(formattedRequest.path.resource);
             result = await this.#execute(request.method, formattedRequest);
         } catch (e) {
             console.error(e);
-            result = { status: 500, data: e.message };
+            result = { status: e?.status || 500, data: e.message };
+        } finally {
+            this.#formatResponse(response, result);
+            response.end();
         }
-        this.#formatResponse(response, result);
-        response.end();
     }
 
     #formatResponse(response, { data = '', headers = [], status = '200' }) {
