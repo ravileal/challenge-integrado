@@ -3,7 +3,7 @@ const CONFIG = Object.freeze({
         cache: process.env.CACHE || 'memory',
         database: {
             driver: 'mongodb',
-            host: process.env.HOST || 'localhost',
+            host: process.env.DB_HOST || 'localhost',
             dbName: process.env.DB_NAME || 'universities',
             username: process.env.DB_USER || 'root',
             password: process.env.DB_PASSWORD || 'root',
@@ -14,7 +14,7 @@ const CONFIG = Object.freeze({
         cache: process.env.CACHE,
         database: {
             driver: 'mongodb',
-            host: process.env.HOST || 'localhost',
+            host: process.env.DB_HOST || 'localhost',
             dbName: process.env.DB_NAME,
             username: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
