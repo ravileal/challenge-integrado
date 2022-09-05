@@ -40,6 +40,10 @@ MONGO_INITDB_ROOT_PASSWORD: root
 MONGO_INITDB_DATABASE: universities
 ...
 ```
+No diretório `docs` está a configuração `.json` da API exportada via Postman. Para usa-lá basta importar no Postman.
+```bash
+docs/Integrado Challenge.postman_collection.json
+```
 ## Running
 Para iniciar o servidor execute o comando:
 ```base
