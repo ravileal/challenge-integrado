@@ -1,7 +1,7 @@
 const { ValidationError } = require('../../shared/errors/validation-error');
 
 class UniversityEntity {
-    static #REQUIRED_FIELDS = ['name', 'state', 'country'];
+    static #REQUIRED_FIELDS = ['name'];
     static #ARRAY_FIELDS = ['webPages', 'domains'];
 
     static ENTITY = 'university';
@@ -53,9 +53,13 @@ class UniversityEntity {
         return Array.isArray(value) && !value.length;
     }
 
-    toSchema() {
-        return new this.schema({
-            _id: this.id,
+    toSchema(action = 'save') {
+        action === 'update' ? this.updateSchema() : this.newSchema();
+        return this.schema;
+    }
+
+    newSchema() {
+        this.schema = new this.schema({
             name: this.name,
             state: this.state,
             state_Code: this.stateCode,
@@ -66,6 +70,18 @@ class UniversityEntity {
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
         });
+    }
+
+    updateSchema() {
+        this.schema.set('name', this.name);
+        this.schema.set('state', this.state);
+        this.schema.set('state_Code', this.stateCode);
+        this.schema.set('country', this.country);
+        this.schema.set('country_Code', this.countryCode);
+        this.schema.set('web_Pages', this.webPages);
+        this.schema.set('domains', this.domains);
+        this.schema.set('createdAt', this.createdAt);
+        this.schema.set('updatedAt', this.updatedAt);
     }
 }
 

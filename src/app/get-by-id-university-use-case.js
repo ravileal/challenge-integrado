@@ -6,7 +6,7 @@ const getByIdUniversityUseCase = async (
 ) => {
     const schema = schemaFactory(UniversityEntity.ENTITY);
     const universityModel = await universityRepository.getById(id, { schema });
-    const university = new UniversityView(universityModel);
+    const university = UniversityView.fromModel(universityModel);
     return university;
 };
 

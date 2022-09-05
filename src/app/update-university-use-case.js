@@ -4,18 +4,17 @@ const updateUniversityUseCase = async (
     { universityRepository, schemaFactory, UniversityView },
     { id, dataView },
 ) => {
-    new UniversityEntity(dataView);
+    new UniversityEntity(dataView.toModel());
     const schema = schemaFactory(UniversityEntity.ENTITY);
     const findModel = await universityRepository.getById(id, { schema });
     const universityModel = new UniversityEntity({
-        id,
         ...findModel,
-        ...dataView,
+        ...dataView.toModel(),
         updatedAt: new Date(),
-        schema,
     });
+    universityModel.toSchema('update');
     const result = await universityRepository.save(universityModel);
-    const university = new UniversityView(result);
+    const university = UniversityView.fromModel(result);
     return university;
 };
 

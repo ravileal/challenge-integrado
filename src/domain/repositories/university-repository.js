@@ -1,22 +1,24 @@
 const {
     IUniversityRepository,
 } = require('../../infra/database/repositories/university-repository');
+const { DuplicatedError } = require('../../shared/errors/duplicated-error');
 const { NotFoundError } = require('../../shared/errors/not-found-error');
 const { UniversityEntity } = require('../entities/university-entity');
 
 class UniversityRepository extends IUniversityRepository {
-    #toDomain(data) {
+    #toDomain(schema) {
         return new UniversityEntity({
-            id: data._id.toString(),
-            name: data.name,
-            state: data.state,
-            stateCode: data.state_Code,
-            country: data.country,
-            countryCode: data.country_Code,
-            webPages: data.web_Pages,
-            domains: data.domains,
-            createdAt: data.createdAt,
-            updatedAt: data.updatedAt,
+            id: schema._id.toString(),
+            name: schema.name,
+            state: schema.state,
+            stateCode: schema.state_Code,
+            country: schema.country,
+            countryCode: schema.country_Code,
+            webPages: schema.web_Pages,
+            domains: schema.domains,
+            createdAt: schema.createdAt,
+            updatedAt: schema.updatedAt,
+            schema: schema,
         });
     }
 
@@ -50,9 +52,14 @@ class UniversityRepository extends IUniversityRepository {
     }
 
     async save(model) {
-        const university = await model.toSchema().save();
-        const universityModel = this.#toDomain(university);
-        return universityModel;
+        try {
+            const university = await model.schema.save();
+            const universityModel = this.#toDomain(university);
+            return universityModel;
+        } catch (e) {
+            if (e.message.includes('duplicate key'))
+                throw new DuplicatedError('University already registered');
+        }
     }
 
     async delete(id, model) {

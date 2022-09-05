@@ -9,14 +9,17 @@ const { HttpAdapter } = require('./src/infra/server/HttpAdapter');
 const { ApplicationController } = require('./src/interface/controllers/application-controller');
 const { UniversityRepository } = require('./src/domain/repositories/university-repository');
 
-const context = {
-    connection,
-    schemaFactory,
-    server: new HttpAdapter(),
-    universityRepository: new UniversityRepository(),
-    ...require('./src/app'),
-    ...require('./src/interface/views'),
-};
+exports.handler = async () => {
+    const context = {
+        connection,
+        schemaFactory,
+        server: new HttpAdapter(),
+        universityRepository: new UniversityRepository(),
+        ...require('./src/app'),
+        ...require('./src/interface/views'),
+    };
 
-const appController = new ApplicationController(context);
-(async () => await appController.execute())();
+    const appController = new ApplicationController(context);
+    await appController.execute();
+    await connection.close();
+};

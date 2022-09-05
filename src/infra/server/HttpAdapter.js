@@ -3,6 +3,12 @@ const url = require('node:url');
 const { BaseAdapter } = require('./BaseAdapter');
 
 class HttpAdapter extends BaseAdapter {
+    #corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    };
+
     async start() {
         const server = http.createServer();
         server.on('request', (request, response) => this.#handlerRequest(request, response));
@@ -24,8 +30,9 @@ class HttpAdapter extends BaseAdapter {
         }
     }
 
-    #formatResponse(response, { data = '', headers = [], status = '200' }) {
-        Object.entries(headers).forEach(([key, value]) => response.setHeader(key, value));
+    #formatResponse(response, { data = '', headers = [], status = '200' } = {}) {
+        const allHeaders = { ...headers, ...this.#corsHeaders };
+        Object.entries(allHeaders).forEach(([key, value]) => response.setHeader(key, value));
         response.statusCode = status;
         const stringData = typeof data === 'string' ? data : JSON.stringify(data);
         response.write(stringData);
@@ -77,7 +84,7 @@ class HttpAdapter extends BaseAdapter {
         const queries = query.split('&');
         const objectQueries = queries.reduce((acc, query) => {
             const [key, value] = query.split('=');
-            Object.assign(acc, { [key]: value });
+            Object.assign(acc, { [key]: decodeURI(value) });
             return acc;
         }, {});
         return objectQueries;

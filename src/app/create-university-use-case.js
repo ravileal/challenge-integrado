@@ -8,13 +8,14 @@ const createUniversityUseCase = async (
 ) => {
     const schema = schemaFactory(UniversityEntity.ENTITY);
     const data = {
-        ...dataView,
+        ...dataView.toModel(),
         createdAt: new Date(),
         schema,
     };
     const universityModel = new UniversityEntity(data);
+    universityModel.toSchema('save');
     const result = await universityRepository.save(universityModel, connection);
-    const university = new UniversityView(result);
+    const university = UniversityView.fromModel(result);
     return university;
 };
 

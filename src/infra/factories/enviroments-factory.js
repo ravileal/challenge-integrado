@@ -1,5 +1,5 @@
 const CONFIG = Object.freeze({
-    LOCAL: {
+    DEVELOPMENT: {
         cache: process.env.CACHE || 'memory',
         database: {
             driver: 'mongodb',
@@ -10,7 +10,7 @@ const CONFIG = Object.freeze({
             port: process.env.DB_PORT || '27017',
         },
     },
-    DEVELOPMENT: {
+    HOMOLOGATION: {
         cache: process.env.CACHE,
         database: {
             driver: 'mongodb',
@@ -35,13 +35,13 @@ const CONFIG = Object.freeze({
 });
 
 const ENVIROMENTS = Object.freeze({
-    local: CONFIG.LOCAL,
     development: CONFIG.DEVELOPMENT,
+    homologation: CONFIG.HOMOLOGATION,
     production: CONFIG.PRODUCTION,
 });
 
 const enviromentsFactory = () => {
-    const enviroment = process.env.NODE_ENV || 'local';
+    const enviroment = process.env.NODE_ENV || 'development';
     const resolver = ENVIROMENTS[enviroment];
     if (!resolver) throw new Error('Unknown environment: ', enviroment);
     return resolver;

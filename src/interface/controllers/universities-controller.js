@@ -17,15 +17,5 @@ class UniversitiesController extends BaseController {
             },
         });
     }
-
-    configureServer() {
-        const actions = ['get', 'post', 'put', 'delete'];
-        for (const action of actions)
-            this.server[action] = async request => {
-                const cbAction = async () => await this[action].call(this, request);
-                const result = await this.connection.getConnection(cbAction);
-                return result;
-            };
-    }
 }
 module.exports = { UniversitiesController };

@@ -13,15 +13,7 @@ class BaseAdapter {
         throw new Error('Method Not Implemented');
     }
 
-    async getAll(filters, connection) {
-        throw new Error('Method Not Implemented');
-    }
-
-    async getOne(id, connection) {
-        throw new Error('Method Not Implemented');
-    }
-
-    async save(model, connection) {
+    async close() {
         throw new Error('Method Not Implemented');
     }
 }

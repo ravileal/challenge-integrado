@@ -5,11 +5,10 @@ const getAllUniversityUseCase = async (
     { filters },
 ) => {
     const schema = schemaFactory(UniversityEntity.ENTITY);
-    const { data: universitiesModel, pagination } = await universityRepository.getAll(
-        { pagination: filters.pagination },
-        { schema },
-    );
-    const universitiesView = universitiesModel.map(v => new UniversityView(v));
+    const { data: universitiesModel, pagination } = await universityRepository.getAll(filters, {
+        schema,
+    });
+    const universitiesView = universitiesModel.map(UniversityView.fromModel);
     return {
         pagination,
         data: universitiesView,

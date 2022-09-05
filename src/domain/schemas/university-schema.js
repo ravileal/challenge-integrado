@@ -2,9 +2,9 @@ const { Schema, model } = require('mongoose');
 
 const university = new Schema({
     name: { type: String, required: true },
-    state: { type: String, required: true },
+    state: String,
     state_code: String,
-    country: { type: String, required: true },
+    country: String,
     country_code: String,
     web_pages: [String],
     domains: [String],

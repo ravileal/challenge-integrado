@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 const { ServerAdapter } = require('../../interface/Contracts/ServerAdapter');
 
@@ -14,13 +15,11 @@ class BaseAdapter extends ServerAdapter {
         this.PUT = callback;
     }
 
-    set patch(callback) {
-        this.PATCH = callback;
-    }
-
     set delete(callback) {
         this.DELETE = callback;
     }
+
+    OPTIONS = () => { };
 }
 
 module.exports = { BaseAdapter };
