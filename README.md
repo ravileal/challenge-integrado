@@ -25,7 +25,8 @@ docker-compose up -d
 ## Configuration
 Abaixo estão as configurações padrões da aplicação, caso precise mudar alguma delas crie um arquivo `.env` copiando as informações abaixo e alterando conforme o desejado.
 ```bash
-HOST=localhost
+DB_PORT=3000
+DB_HOST=localhost
 DB_NAME=universities
 DB_USER=root
 DB_PASSWORD=root
