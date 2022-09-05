@@ -10,17 +10,6 @@ const CONFIG = Object.freeze({
             port: process.env.DB_PORT || '27017',
         },
     },
-    HOMOLOGATION: {
-        cache: process.env.CACHE,
-        database: {
-            driver: 'mongodb',
-            host: process.env.HOST || 'localhost',
-            dbName: process.env.DB_NAME,
-            username: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            port: process.env.DB_PORT || '27017',
-        },
-    },
     PRODUCTION: {
         cache: process.env.CACHE,
         database: {
@@ -36,7 +25,6 @@ const CONFIG = Object.freeze({
 
 const ENVIROMENTS = Object.freeze({
     development: CONFIG.DEVELOPMENT,
-    homologation: CONFIG.HOMOLOGATION,
     production: CONFIG.PRODUCTION,
 });
 

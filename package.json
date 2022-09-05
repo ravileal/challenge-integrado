@@ -8,6 +8,7 @@
     "scripts": {
         "dev": "nodemon --exec npm run start",
         "start": "node -r dotenv/config -e \"require('./index').handler()\"",
+        "start:crowler": "node crowler.js",
         "lint": "yarn eslint",
         "test": "yarn jest  --clearCache --logHeapUsage --coverage --passWithNoTests",
         "test:ci": "yarn test --ci",
